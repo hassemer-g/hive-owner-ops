@@ -11,14 +11,17 @@
             padding: 5%;
             box-sizing: border-box;
             line-height: 1.6;
-            max-width: 500px; 
+            max-width: 500px;
             text-align: center;
+            background-color: #121212;
+            color: #e0e0e0;
         }
 
         h1 {
             font-size: 1.8rem;
             text-align: center;
             margin-bottom: 5%;
+            color: #ffffff;
         }
 
         .hidden {
@@ -32,13 +35,13 @@
         .subtitle {
             text-align: center;
             font-size: 1rem;
-            color: black;
+            color: #b0b0b0;
             margin-bottom: 20px;
-            white-space: normal;  
+            white-space: normal;
             display: block;
         }
         .subtitle a {
-            color: green;
+            color: #4CAF50;
             text-decoration: none;
         }
 
@@ -54,15 +57,17 @@
             font-size: 1rem;
             padding: 3%;
             margin-top: 2%;
-            border: 1px solid #ccc;
+            border: 1px solid #333;
             border-radius: 5px;
             box-sizing: border-box;
+            background-color: #1e1e1e;
+            color: #ffffff;
         }
 
         input:focus {
             outline: none;
-            border-color: #007BFF;
-            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
         }
 
         button {
@@ -78,11 +83,13 @@
             display: block;
             margin-left: auto;
             margin-right: auto;
+            background-color: #4CAF50;
+            color: #ffffff;
         }
 
         button:disabled {
-            background-color: grey;
-            color: white;
+            background-color: #555;
+            color: #ccc;
             cursor: not-allowed;
         }
 
@@ -104,57 +111,59 @@
             word-break: break-word;
             max-width: 100%;
             display: block;
-            padding: 2%;  
-            border-radius: 2%;  
-            background-color: #f8f9fa;
+            padding: 2%;
+            border-radius: 2%;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
         }
 
         .warning-text {
             font-size: 0.8rem;
-            color: red;
+            color: #ff4444;
             margin-top: 2%;
         }
 
         .checkbox-container {
             display: flex;
-            flex-direction: row; 
-            align-items: center; 
-            justify-content: flex-start; 
-            width: 100%; 
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
             margin-top: 2%;
         }
 
         .checkbox-container input[type="checkbox"] {
             width: auto;
             height: auto;
-            margin: 0; 
-            margin-right: 2%; 
-            flex-shrink: 0; 
+            margin: 0;
+            margin-right: 2%;
+            flex-shrink: 0;
         }
 
         .checkbox-container label {
             font-size: 0.85rem;
             line-height: 1.2;
             text-align: left;
-            flex-grow: 1; 
+            flex-grow: 1;
             display: inline-block;
-            white-space: normal; 
+            white-space: normal;
             width: 100%;
-            margin: 0; 
+            margin: 0;
+            color: #e0e0e0;
         }
 
         .footer {
             text-align: center;
             margin-top: 5%;
             font-size: 0.9rem;
+            color: #b0b0b0;
         }
 
         .footer a {
-            color: green;
+            color: #4CAF50;
             text-decoration: none;
         }
 
-        
         @media screen and (min-width: 768px) {
             body {
                 padding: 2%;
@@ -183,9 +192,9 @@
     </script>
     <script>
 
+
 document.addEventListener("DOMContentLoaded", () => {
     const client = new dhive.Client("https://api.hive.blog");
-
 
     const accountNameChgRec = document.getElementById("accountNameChgRec");
     const newRecoveryAccountChgRec = document.getElementById("newRecoveryAccountChgRec");
@@ -195,7 +204,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const privateOwnerKey2ChgRec = document.getElementById("privateOwnerKey2ChgRec");
     const submitButtonChgRec = document.getElementById("submitButtonChgRec");
     const resultMessageChgRec = document.getElementById("resultMessageChgRec");
-
 
     const accountNameUpd = document.getElementById("accountNameUpd");
     const newPublicOwnerKey1Upd = document.getElementById("newPublicOwnerKey1Upd");
@@ -212,7 +220,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const submitButtonUpd = document.getElementById("submitButtonUpd");
     const resultMessageUpd = document.getElementById("resultMessageUpd");
 
-
     const accountNameExecRec = document.getElementById("accountNameExecRec");
     const newPrivateOwnerKeyExecRec = document.getElementById("newPrivateOwnerKeyExecRec");
     const previousPrivateOwnerKey1ExecRec = document.getElementById("previousPrivateOwnerKey1ExecRec");
@@ -223,12 +230,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const resultMessageExecRec = document.getElementById("resultMessageExecRec");
 
 
-
     function validateAccountNameStructure(accountName) {
         const accountNameRegex = /^[a-z](([a-z0-9-]+)?[a-z0-9])?(\.[a-z](([a-z0-9-]+)?[a-z0-9])?)*$/;
-
         const validDotPlacement = !accountName.includes(".") || accountName.split(".").every(part => part.length >= 3);
-
         const noDotFollowedByHyphenOrNumber = !/\.[0-9-]/.test(accountName);
         return (
             accountName.length >= 3 &&
@@ -239,7 +243,6 @@ document.addEventListener("DOMContentLoaded", () => {
             !accountName.includes("-.")
         );
     }
-
 
     function validateAccountInput(inputField, submitButton) {
         const accountName = inputField.value.trim();
@@ -253,12 +256,10 @@ document.addEventListener("DOMContentLoaded", () => {
         submitButton.disabled = !correctNameFormat;
     }
 
-
     accountNameChgRec.addEventListener("input", () => validateAccountInput(accountNameChgRec, submitButtonChgRec));
     newRecoveryAccountChgRec.addEventListener("input", () => validateAccountInput(newRecoveryAccountChgRec, submitButtonChgRec));
     accountNameUpd.addEventListener("input", () => validateAccountInput(accountNameUpd, submitButtonUpd));
     accountNameExecRec.addEventListener("input", () => validateAccountInput(accountNameExecRec, submitButtonExecRec));
-
 
 
     function validateChangeRecoveryTool() {
@@ -267,61 +268,51 @@ document.addEventListener("DOMContentLoaded", () => {
         const accountName = accountNameChgRec.value.trim();
         const newRecoveryAccount = newRecoveryAccountChgRec.value.trim();
         const privateOwnerKey1 = privateOwnerKey1ChgRec.value.trim();
-        const privateOwnerKey2 = privateOwnerKey2ChgRec?.value.trim() || ""; 
+        const privateOwnerKey2 = privateOwnerKey2ChgRec?.value.trim() || "";
 
-        
         const isAccountNameValidChgRec = accountName && validateAccountNameStructure(accountName);
         const isNewRecoveryAccountValid = newRecoveryAccount && validateAccountNameStructure(newRecoveryAccount);
         const areAccountsDifferentChgRec = accountName !== newRecoveryAccount;
 
-        
         let arePrivateKeysValidChgRec = true;
         if (signWithTwoOwnerKeysChgRec.checked) {
-            
             arePrivateKeysValidChgRec = privateOwnerKey2 && privateOwnerKey2 !== privateOwnerKey1;
         }
 
-        
         let isFormValidChgRec = isAccountNameValidChgRec && isNewRecoveryAccountValid && areAccountsDifferentChgRec && privateOwnerKey1 && arePrivateKeysValidChgRec;
 
-        
         submitButtonChgRec.disabled = !isFormValidChgRec;
     }
 
-    
     accountNameChgRec.addEventListener("input", validateChangeRecoveryTool);
     newRecoveryAccountChgRec.addEventListener("input", validateChangeRecoveryTool);
     privateOwnerKey1ChgRec.addEventListener("input", validateChangeRecoveryTool);
     privateOwnerKey2ChgRec.addEventListener("input", validateChangeRecoveryTool);
     signWithTwoOwnerKeysChgRec.addEventListener("change", validateChangeRecoveryTool);
 
-    
     signWithTwoOwnerKeysChgRec.addEventListener("change", () => {
         if (secondPrivateKeyGroupChgRec) {
             secondPrivateKeyGroupChgRec.style.display = signWithTwoOwnerKeysChgRec.checked ? "block" : "none";
         }
-        validateChangeRecoveryTool(); 
+        validateChangeRecoveryTool();
     });
 
-    
     validateChangeRecoveryTool();
 
-    
     async function submitTransactionChgRec() {
         if (!accountNameChgRec || !newRecoveryAccountChgRec || !privateOwnerKey1ChgRec || !resultMessageChgRec) return;
 
         const accountName = accountNameChgRec.value.trim();
         const newRecoveryAccount = newRecoveryAccountChgRec.value.trim();
         const privateOwnerKey1 = privateOwnerKey1ChgRec.value.trim();
-        const privateOwnerKey2 = privateOwnerKey2ChgRec?.value.trim() || ""; 
+        const privateOwnerKey2 = privateOwnerKey2ChgRec?.value.trim() || "";
 
         const op = [
-            "change_recovery_account",
-            {
+            "change_recovery_account", {
                 account_to_recover: accountName,
                 extensions: [],
-                new_recovery_account: newRecoveryAccount,
-            },
+                new_recovery_account: newRecoveryAccount
+            }
         ];
 
         try {
@@ -337,17 +328,14 @@ document.addEventListener("DOMContentLoaded", () => {
             resultMessageChgRec.textContent = "Error broadcasting transaction: " + error.message;
             resultMessageChgRec.style.color = "red";
         } finally {
-            
             if (privateOwnerKey1ChgRec) privateOwnerKey1ChgRec.value = "";
             if (privateOwnerKey2ChgRec) privateOwnerKey2ChgRec.value = "";
         }
     }
 
-    
     if (submitButtonChgRec) {
         submitButtonChgRec.addEventListener("click", submitTransactionChgRec);
     }
-
 
 
     function validateAccountUpdateForm() {
@@ -355,61 +343,51 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const accountName = accountNameUpd.value.trim();
         const newPublicOwnerKey1 = newPublicOwnerKey1Upd.value.trim();
-        const newPublicOwnerKey2 = newPublicOwnerKey2Upd?.value.trim() || ""; 
+        const newPublicOwnerKey2 = newPublicOwnerKey2Upd?.value.trim() || "";
         const privateOwnerKey1 = privateOwnerKey1Upd.value.trim();
-        const privateOwnerKey2 = privateOwnerKey2Upd?.value.trim() || ""; 
+        const privateOwnerKey2 = privateOwnerKey2Upd?.value.trim() || "";
 
-        
         const allKeysFilledUpd = [newPublicActiveKeyUpd, newPublicPostingKeyUpd, newPublicMemoKeyUpd].every(
-            (input) => input?.value.trim() !== "" 
+            (input) => input?.value.trim() !== ""
         );
 
-        
         let isValid = accountName && validateAccountNameStructure(accountName);
 
-        
         isValid = isValid && privateOwnerKey1 && allKeysFilledUpd;
 
-        
         if (useTwoPublicOwnerKeysUpd.checked) {
-            const ownerKeys = [newPublicOwnerKey1, newPublicOwnerKey2].filter(Boolean); 
+            const ownerKeys = [newPublicOwnerKey1, newPublicOwnerKey2].filter(Boolean);
 
-            
             isValid = isValid && ownerKeys.length === 2 && newPublicOwnerKey1 !== newPublicOwnerKey2;
         } else {
-            isValid = isValid && newPublicOwnerKey1 !== ""; 
+            isValid = isValid && newPublicOwnerKey1 !== "";
         }
 
-        
         if (signWithTwoOwnerKeysUpd.checked) {
             isValid = isValid && privateOwnerKey1 !== privateOwnerKey2 && privateOwnerKey2 !== "";
         }
 
-        
         submitButtonUpd.disabled = !isValid;
     }
 
-    
     if (useTwoPublicOwnerKeysUpd) {
         useTwoPublicOwnerKeysUpd.addEventListener("change", () => {
             if (secondPublicOwnerKeyGroupUpd) {
                 secondPublicOwnerKeyGroupUpd.style.display = useTwoPublicOwnerKeysUpd.checked ? "block" : "none";
             }
-            validateAccountUpdateForm(); 
+            validateAccountUpdateForm();
         });
     }
 
-    
     if (signWithTwoOwnerKeysUpd) {
         signWithTwoOwnerKeysUpd.addEventListener("change", () => {
             if (secondPrivateKeyGroupUpd) {
                 secondPrivateKeyGroupUpd.style.display = signWithTwoOwnerKeysUpd.checked ? "block" : "none";
             }
-            validateAccountUpdateForm(); 
+            validateAccountUpdateForm();
         });
     }
 
-    
     accountNameUpd.addEventListener("input", validateAccountUpdateForm);
     newPublicOwnerKey1Upd.addEventListener("input", validateAccountUpdateForm);
     newPublicOwnerKey2Upd.addEventListener("input", validateAccountUpdateForm);
@@ -421,27 +399,24 @@ document.addEventListener("DOMContentLoaded", () => {
     useTwoPublicOwnerKeysUpd.addEventListener("change", validateAccountUpdateForm);
     signWithTwoOwnerKeysUpd.addEventListener("change", validateAccountUpdateForm);
 
-    
     validateAccountUpdateForm();
 
-    
     async function submitAccountUpdateTransaction() {
         if (!accountNameUpd || !privateOwnerKey1Upd || !newPublicOwnerKey1Upd || !newPublicActiveKeyUpd || !resultMessageUpd) return;
 
         const accountName = accountNameUpd.value.trim();
         const privateOwnerKey1 = privateOwnerKey1Upd.value.trim();
-        const privateOwnerKey2 = privateOwnerKey2Upd?.value.trim() || ""; 
+        const privateOwnerKey2 = privateOwnerKey2Upd?.value.trim() || "";
         const newPublicOwnerKey1 = newPublicOwnerKey1Upd.value.trim();
-        const newPublicOwnerKey2 = newPublicOwnerKey2Upd?.value.trim() || ""; 
+        const newPublicOwnerKey2 = newPublicOwnerKey2Upd?.value.trim() || "";
         const newPublicActiveKey = newPublicActiveKeyUpd.value.trim();
         const newPublicPostingKey = newPublicPostingKeyUpd.value.trim();
         const newPublicMemoKey = newPublicMemoKeyUpd.value.trim();
 
         let ownerAuths;
         if (useTwoPublicOwnerKeysUpd.checked) {
-            
             const sortedKeys = [newPublicOwnerKey1, newPublicOwnerKey2].sort((a, b) => {
-                return a.localeCompare(b, undefined, { sensitivity: 'base' });
+                return a.localeCompare(b, undefined, { sensitivity: "base" });
             });
 
             ownerAuths = sortedKeys.map((key) => [key, 1]);
@@ -450,15 +425,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const op = [
-            "account_update",
-            {
+            "account_update", {
                 account: accountName,
                 owner: { weight_threshold: useTwoPublicOwnerKeysUpd.checked ? 2 : 1, account_auths: [], key_auths: ownerAuths },
                 active: { weight_threshold: 1, account_auths: [], key_auths: [[newPublicActiveKey, 1]] },
                 posting: { weight_threshold: 1, account_auths: [], key_auths: [[newPublicPostingKey, 1]] },
                 memo_key: newPublicMemoKey,
-                json_metadata: "",
-            },
+                json_metadata: ""
+            }
         ];
 
         try {
@@ -473,17 +447,14 @@ document.addEventListener("DOMContentLoaded", () => {
             resultMessageUpd.textContent = "Error broadcasting transaction: " + error.message;
             resultMessageUpd.style.color = "red";
         } finally {
-            
             if (privateOwnerKey1Upd) privateOwnerKey1Upd.value = "";
             if (privateOwnerKey2Upd) privateOwnerKey2Upd.value = "";
         }
     }
 
-    
     if (submitButtonUpd) {
         submitButtonUpd.addEventListener("click", submitAccountUpdateTransaction);
     }
-
 
 
     function validateExecuteRecoveryTool() {
@@ -492,35 +463,29 @@ document.addEventListener("DOMContentLoaded", () => {
         const accountName = accountNameExecRec.value.trim();
         const newPrivateOwnerKey = newPrivateOwnerKeyExecRec.value.trim();
         const previousPrivateOwnerKey1 = previousPrivateOwnerKey1ExecRec.value.trim();
-        const previousPrivateOwnerKey2 = previousPrivateOwnerKey2ExecRec?.value.trim() || ""; 
+        const previousPrivateOwnerKey2 = previousPrivateOwnerKey2ExecRec?.value.trim() || "";
 
-        
         const isAccountNameValidExecRec = accountName && validateAccountNameStructure(accountName);
 
-        
         let arePrivateKeysValidExecRec = newPrivateOwnerKey && previousPrivateOwnerKey1;
 
-        
         if (signWithTwoOwnerKeysExecRec.checked) {
             arePrivateKeysValidExecRec = arePrivateKeysValidExecRec &&
                 previousPrivateOwnerKey2 &&
                 previousPrivateOwnerKey2 !== previousPrivateOwnerKey1;
         }
 
-        
         submitButtonExecRec.disabled = !(isAccountNameValidExecRec && arePrivateKeysValidExecRec);
     }
 
-    
     if (signWithTwoOwnerKeysExecRec) {
         signWithTwoOwnerKeysExecRec.addEventListener("change", () => {
             const showExtraFields = signWithTwoOwnerKeysExecRec.checked;
             secondPrivateKeyGroupExecRec.style.display = showExtraFields ? "block" : "none";
-            validateExecuteRecoveryTool(); 
+            validateExecuteRecoveryTool();
         });
     }
 
-    
     const inputFieldsExecRec = [
         accountNameExecRec,
         newPrivateOwnerKeyExecRec,
@@ -530,21 +495,18 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
     inputFieldsExecRec.forEach(field => field?.addEventListener("input", validateExecuteRecoveryTool));
 
-    
     validateExecuteRecoveryTool();
 
-    
     async function submitTransactionExecRec() {
         if (!accountNameExecRec || !newPrivateOwnerKeyExecRec || !previousPrivateOwnerKey1ExecRec || !resultMessageExecRec) return;
 
         const accountName = accountNameExecRec.value.trim();
         const newPrivateOwnerKey = newPrivateOwnerKeyExecRec.value.trim();
         const previousPrivateOwnerKey1 = previousPrivateOwnerKey1ExecRec.value.trim();
-        const previousPrivateOwnerKey2 = previousPrivateOwnerKey2ExecRec?.value.trim() || ""; 
+        const previousPrivateOwnerKey2 = previousPrivateOwnerKey2ExecRec?.value.trim() || "";
 
         let newPublicOwnerKey, previousPublicOwnerKey1, previousPublicOwnerKey2;
         try {
-            
             newPublicOwnerKey = dhive.PrivateKey.fromString(newPrivateOwnerKey).createPublic().toString();
             previousPublicOwnerKey1 = dhive.PrivateKey.fromString(previousPrivateOwnerKey1).createPublic().toString();
             previousPublicOwnerKey2 = previousPrivateOwnerKey2
@@ -555,12 +517,11 @@ document.addEventListener("DOMContentLoaded", () => {
             resultMessageExecRec.textContent = "Invalid private key entered.";
             resultMessageExecRec.style.color = "red";
 
-            
             if (newPrivateOwnerKeyExecRec) newPrivateOwnerKeyExecRec.value = "";
             if (previousPrivateOwnerKey1ExecRec) previousPrivateOwnerKey1ExecRec.value = "";
             if (previousPrivateOwnerKey2ExecRec) previousPrivateOwnerKey2ExecRec.value = "";
 
-            return; 
+            return;
         }
 
         const newOwnerAuthority = {
@@ -571,10 +532,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         let recentOwnerAuthority;
         if (signWithTwoOwnerKeysExecRec.checked) {
-            
             const sortedPublicKeys = [previousPublicOwnerKey1, previousPublicOwnerKey2]
-                .filter(Boolean) 
-                .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
+                .filter(Boolean)
+                .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
 
             recentOwnerAuthority = {
                 account_auths: [],
@@ -593,8 +553,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const op = [
-            'recover_account',
-            {
+            "recover_account", {
                 account_to_recover: accountName,
                 new_owner_authority: newOwnerAuthority,
                 recent_owner_authority: recentOwnerAuthority,
@@ -606,12 +565,11 @@ document.addEventListener("DOMContentLoaded", () => {
             resultMessageExecRec.textContent = "Failed to derive public keys.";
             resultMessageExecRec.style.color = "red";
 
-            
             if (newPrivateOwnerKeyExecRec) newPrivateOwnerKeyExecRec.value = "";
             if (previousPrivateOwnerKey1ExecRec) previousPrivateOwnerKey1ExecRec.value = "";
             if (previousPrivateOwnerKey2ExecRec) previousPrivateOwnerKey2ExecRec.value = "";
 
-            return;  
+            return;
         }
 
         try {
@@ -629,14 +587,12 @@ document.addEventListener("DOMContentLoaded", () => {
             resultMessageExecRec.textContent = "Error broadcasting transaction: " + error.message;
             resultMessageExecRec.style.color = "red";
         } finally {
-            
             if (newPrivateOwnerKeyExecRec) newPrivateOwnerKeyExecRec.value = "";
             if (previousPrivateOwnerKey1ExecRec) previousPrivateOwnerKey1ExecRec.value = "";
             if (previousPrivateOwnerKey2ExecRec) previousPrivateOwnerKey2ExecRec.value = "";
         }
     }
 
-    
     if (submitButtonExecRec) {
     submitButtonExecRec.addEventListener("click", submitTransactionExecRec);
     }
@@ -644,10 +600,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-
 function clearInputs() {
-
-
     const accountNameChgRec = document.getElementById("accountNameChgRec");
     const newRecoveryAccountChgRec = document.getElementById("newRecoveryAccountChgRec");
     const privateOwnerKey1ChgRec = document.getElementById("privateOwnerKey1ChgRec");
@@ -665,7 +618,6 @@ function clearInputs() {
     if (secondPrivateKeyGroupChgRec) secondPrivateKeyGroupChgRec.style.display = "none";
     if (submitButtonChgRec) submitButtonChgRec.disabled = true;
     if (resultMessageChgRec) resultMessageChgRec.textContent = "";
-
 
     const accountNameUpd = document.getElementById("accountNameUpd");
     const newPublicOwnerKey1Upd = document.getElementById("newPublicOwnerKey1Upd");
@@ -697,7 +649,6 @@ function clearInputs() {
     if (submitButtonUpd) submitButtonUpd.disabled = true;
     if (resultMessageUpd) resultMessageUpd.textContent = "";
 
-
     const accountNameExecRec = document.getElementById("accountNameExecRec");
     const newPrivateOwnerKeyExecRec = document.getElementById("newPrivateOwnerKeyExecRec");
     const previousPrivateOwnerKey1ExecRec = document.getElementById("previousPrivateOwnerKey1ExecRec");
@@ -718,22 +669,18 @@ function clearInputs() {
 }
 
 
-
 function showPage(pageId) {
-
 
     if (pageId === "mainMenu") {
         if (typeof clearInputs === "function") {
-            clearInputs(); 
+            clearInputs();
         }
     }
-
 
     document.getElementById("mainMenu").style.display = "none";
     document.getElementById("changeRecoveryTool").style.display = "none";
     document.getElementById("accountUpdateTool").style.display = "none";
     document.getElementById("executeRecoveryTool").style.display = "none";
-
 
     document.getElementById(pageId).style.display = "block";
 }
@@ -838,7 +785,7 @@ function showPage(pageId) {
         <p class="subtitle">• This will execute the recovery of a Hive account</p>
         <p class="subtitle">• Before recovering an account, your Recovery Account must broadcast a Recovery Request operation (this can be done using my <a href="https://hassemer-g.github.io/transactions/" target="_blank">Transactions Tool</a>)</p>
         <p class="subtitle">• Your "New Private Owner Key" must match the "New Public Owner Key" given in the Recovery Request broadcast by your Recovery Account</p>
-        <p class="subtitle">• I recommend changing your account's keys right after completing the recovery process (use a "Change Account Keys" transaction)</p>
+        <p class="subtitle">• I recommend changing your account's keys right after completing the recovery process (use my "Change Account Keys" tool)</p>
         <div class="form-group">
             <label for="accountNameExecRec">Your Hive Account:</label>
             <input type="text" id="accountNameExecRec" placeholder="E.g., youraccount">
