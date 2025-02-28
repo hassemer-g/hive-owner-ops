@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Owner Operations Tool</title>
+    <title>Owner Operations Toolbox</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -24,6 +24,15 @@
             color: #ffffff;
         }
 
+        h1 a {
+            color: green;
+            text-decoration: none;
+        }
+
+        h1 a:hover {
+            color: lightgreen;
+        }
+
         .hidden {
             display: none;
         }
@@ -41,8 +50,12 @@
             display: block;
         }
         .subtitle a {
-            color: #4CAF50;
+            color: green;
             text-decoration: none;
+        }
+
+        .subtitle a:hover {
+            color: lightgreen;
         }
 
         label {
@@ -66,7 +79,7 @@
 
         input:focus {
             outline: none;
-            border-color: #4CAF50;
+            border-color: lightgrey;
             box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
         }
 
@@ -83,7 +96,7 @@
             display: block;
             margin-left: auto;
             margin-right: auto;
-            background-color: #4CAF50;
+            background-color: darkorange;
             color: #ffffff;
         }
 
@@ -94,14 +107,8 @@
         }
 
         button:enabled {
-            background-color: green;
+            background-color: darkorange;
             color: white;
-        }
-
-        #resultMessage {
-            margin-top: 5%;
-            font-size: 0.9rem;
-            font-family: monospace;
         }
 
         .word-wrap {
@@ -115,12 +122,6 @@
             border-radius: 2%;
             background-color: #1e1e1e;
             color: #e0e0e0;
-        }
-
-        .warning-text {
-            font-size: 0.8rem;
-            color: #ff4444;
-            margin-top: 2%;
         }
 
         .checkbox-container {
@@ -152,6 +153,10 @@
             color: #e0e0e0;
         }
 
+        input[type="checkbox"]:checked {
+            accent-color: green;
+        }
+
         .footer {
             text-align: center;
             margin-top: 5%;
@@ -160,8 +165,27 @@
         }
 
         .footer a {
-            color: #4CAF50;
+            color: green;
             text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: lightgreen;
+        }
+
+        #resultMessage {
+            margin-top: 5%;
+            font-size: 0.9rem;
+            font-family: monospace;
+        }
+
+        #explicitConfirmationLock:checked {
+            accent-color: red;
+        }
+
+        #submitButtonLock:enabled {
+            background-color: red;
+            color: white;
         }
 
         @media screen and (min-width: 768px) {
@@ -229,6 +253,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const submitButtonExecRec = document.getElementById("submitButtonExecRec");
     const resultMessageExecRec = document.getElementById("resultMessageExecRec");
 
+    const accountNameLock = document.getElementById("accountNameLock");
+    const privateOwnerKey1Lock = document.getElementById("privateOwnerKey1Lock");
+    const signWithTwoOwnerKeysLock = document.getElementById("signWithTwoOwnerKeysLock");
+    const secondPrivateKeyGroupLock = document.getElementById("secondPrivateKeyGroupLock");
+    const privateOwnerKey2Lock = document.getElementById("privateOwnerKey2Lock");
+    const explicitConfirmationLock = document.getElementById("explicitConfirmationLock");
+    const submitButtonLock = document.getElementById("submitButtonLock");
+    const resultMessageLock = document.getElementById("resultMessageLock");
+
 
     function validateAccountNameStructure(accountName) {
         const accountNameRegex = /^[a-z](([a-z0-9-]+)?[a-z0-9])?(\.[a-z](([a-z0-9-]+)?[a-z0-9])?)*$/;
@@ -260,6 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
     newRecoveryAccountChgRec.addEventListener("input", () => validateAccountInput(newRecoveryAccountChgRec, submitButtonChgRec));
     accountNameUpd.addEventListener("input", () => validateAccountInput(accountNameUpd, submitButtonUpd));
     accountNameExecRec.addEventListener("input", () => validateAccountInput(accountNameExecRec, submitButtonExecRec));
+    accountNameLock.addEventListener("input", () => validateAccountInput(accountNameLock, submitButtonLock));
 
 
     function validateChangeRecoveryTool() {
@@ -270,16 +304,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const privateOwnerKey1 = privateOwnerKey1ChgRec.value.trim();
         const privateOwnerKey2 = privateOwnerKey2ChgRec?.value.trim() || "";
 
-        const isAccountNameValidChgRec = accountName && validateAccountNameStructure(accountName);
+        const isAccountNameValid = accountName && validateAccountNameStructure(accountName);
         const isNewRecoveryAccountValid = newRecoveryAccount && validateAccountNameStructure(newRecoveryAccount);
-        const areAccountsDifferentChgRec = accountName !== newRecoveryAccount;
+        const areAccountsDifferent = accountName !== newRecoveryAccount;
 
-        let arePrivateKeysValidChgRec = true;
+        let arePrivateKeysValid = true;
         if (signWithTwoOwnerKeysChgRec.checked) {
-            arePrivateKeysValidChgRec = privateOwnerKey2 && privateOwnerKey2 !== privateOwnerKey1;
+            arePrivateKeysValid = privateOwnerKey2 && privateOwnerKey2 !== privateOwnerKey1;
         }
 
-        let isFormValidChgRec = isAccountNameValidChgRec && isNewRecoveryAccountValid && areAccountsDifferentChgRec && privateOwnerKey1 && arePrivateKeysValidChgRec;
+        let isFormValidChgRec = isAccountNameValid && isNewRecoveryAccountValid && areAccountsDifferent && privateOwnerKey1 && arePrivateKeysValid;
 
         submitButtonChgRec.disabled = !isFormValidChgRec;
     }
@@ -296,6 +330,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         validateChangeRecoveryTool();
     });
+
+    if (submitButtonChgRec) {
+        submitButtonChgRec.addEventListener("click", submitTransactionChgRec);
+    }
 
     validateChangeRecoveryTool();
 
@@ -330,11 +368,8 @@ document.addEventListener("DOMContentLoaded", () => {
         } finally {
             if (privateOwnerKey1ChgRec) privateOwnerKey1ChgRec.value = "";
             if (privateOwnerKey2ChgRec) privateOwnerKey2ChgRec.value = "";
+            validateChangeRecoveryTool();
         }
-    }
-
-    if (submitButtonChgRec) {
-        submitButtonChgRec.addEventListener("click", submitTransactionChgRec);
     }
 
 
@@ -347,13 +382,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const privateOwnerKey1 = privateOwnerKey1Upd.value.trim();
         const privateOwnerKey2 = privateOwnerKey2Upd?.value.trim() || "";
 
-        const allKeysFilledUpd = [newPublicActiveKeyUpd, newPublicPostingKeyUpd, newPublicMemoKeyUpd].every(
+        const allKeysFilled = [newPublicActiveKeyUpd, newPublicPostingKeyUpd, newPublicMemoKeyUpd].every(
             (input) => input?.value.trim() !== ""
         );
 
         let isValid = accountName && validateAccountNameStructure(accountName);
 
-        isValid = isValid && privateOwnerKey1 && allKeysFilledUpd;
+        isValid = isValid && privateOwnerKey1 && allKeysFilled;
 
         if (useTwoPublicOwnerKeysUpd.checked) {
             const ownerKeys = [newPublicOwnerKey1, newPublicOwnerKey2].filter(Boolean);
@@ -398,6 +433,10 @@ document.addEventListener("DOMContentLoaded", () => {
     privateOwnerKey2Upd.addEventListener("input", validateAccountUpdateForm);
     useTwoPublicOwnerKeysUpd.addEventListener("change", validateAccountUpdateForm);
     signWithTwoOwnerKeysUpd.addEventListener("change", validateAccountUpdateForm);
+
+    if (submitButtonUpd) {
+        submitButtonUpd.addEventListener("click", submitAccountUpdateTransaction);
+    }
 
     validateAccountUpdateForm();
 
@@ -449,11 +488,8 @@ document.addEventListener("DOMContentLoaded", () => {
         } finally {
             if (privateOwnerKey1Upd) privateOwnerKey1Upd.value = "";
             if (privateOwnerKey2Upd) privateOwnerKey2Upd.value = "";
+            validateAccountUpdateForm();
         }
-    }
-
-    if (submitButtonUpd) {
-        submitButtonUpd.addEventListener("click", submitAccountUpdateTransaction);
     }
 
 
@@ -465,17 +501,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const previousPrivateOwnerKey1 = previousPrivateOwnerKey1ExecRec.value.trim();
         const previousPrivateOwnerKey2 = previousPrivateOwnerKey2ExecRec?.value.trim() || "";
 
-        const isAccountNameValidExecRec = accountName && validateAccountNameStructure(accountName);
+        const isAccountNameValid = accountName && validateAccountNameStructure(accountName);
 
-        let arePrivateKeysValidExecRec = newPrivateOwnerKey && previousPrivateOwnerKey1;
+        let arePrivateKeysValid = newPrivateOwnerKey && previousPrivateOwnerKey1;
 
         if (signWithTwoOwnerKeysExecRec.checked) {
-            arePrivateKeysValidExecRec = arePrivateKeysValidExecRec &&
+            arePrivateKeysValid = arePrivateKeysValid &&
                 previousPrivateOwnerKey2 &&
                 previousPrivateOwnerKey2 !== previousPrivateOwnerKey1;
         }
 
-        submitButtonExecRec.disabled = !(isAccountNameValidExecRec && arePrivateKeysValidExecRec);
+        submitButtonExecRec.disabled = !(isAccountNameValid && arePrivateKeysValid);
     }
 
     if (signWithTwoOwnerKeysExecRec) {
@@ -494,6 +530,10 @@ document.addEventListener("DOMContentLoaded", () => {
         signWithTwoOwnerKeysExecRec
     ];
     inputFieldsExecRec.forEach(field => field?.addEventListener("input", validateExecuteRecoveryTool));
+
+    if (submitButtonExecRec) {
+    submitButtonExecRec.addEventListener("click", submitTransactionExecRec);
+    }
 
     validateExecuteRecoveryTool();
 
@@ -520,7 +560,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (newPrivateOwnerKeyExecRec) newPrivateOwnerKeyExecRec.value = "";
             if (previousPrivateOwnerKey1ExecRec) previousPrivateOwnerKey1ExecRec.value = "";
             if (previousPrivateOwnerKey2ExecRec) previousPrivateOwnerKey2ExecRec.value = "";
-
+            validateExecuteRecoveryTool();
             return;
         }
 
@@ -568,7 +608,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (newPrivateOwnerKeyExecRec) newPrivateOwnerKeyExecRec.value = "";
             if (previousPrivateOwnerKey1ExecRec) previousPrivateOwnerKey1ExecRec.value = "";
             if (previousPrivateOwnerKey2ExecRec) previousPrivateOwnerKey2ExecRec.value = "";
-
+            validateExecuteRecoveryTool();
             return;
         }
 
@@ -590,17 +630,118 @@ document.addEventListener("DOMContentLoaded", () => {
             if (newPrivateOwnerKeyExecRec) newPrivateOwnerKeyExecRec.value = "";
             if (previousPrivateOwnerKey1ExecRec) previousPrivateOwnerKey1ExecRec.value = "";
             if (previousPrivateOwnerKey2ExecRec) previousPrivateOwnerKey2ExecRec.value = "";
+            validateExecuteRecoveryTool();
         }
     }
 
-    if (submitButtonExecRec) {
-    submitButtonExecRec.addEventListener("click", submitTransactionExecRec);
+
+    function validateToolLock() {
+        if (!accountNameLock || !privateOwnerKey1Lock || !submitButtonLock) return;
+
+        const accountName = accountNameLock.value.trim();
+        const privateOwnerKey1 = privateOwnerKey1Lock.value.trim();
+        const privateOwnerKey2 = privateOwnerKey2Lock?.value.trim() || "";
+        const isExplicitlyConfirmed = explicitConfirmationLock.checked;
+
+        const isAccountNameValid = accountName && validateAccountNameStructure(accountName);
+
+        let arePrivateKeysValid = true;
+        if (signWithTwoOwnerKeysLock.checked) {
+            arePrivateKeysValid = privateOwnerKey2 && privateOwnerKey2 !== privateOwnerKey1;
+        }
+
+        let isFormValid = isAccountNameValid && privateOwnerKey1 && arePrivateKeysValid && isExplicitlyConfirmed;
+
+        submitButtonLock.disabled = !isFormValid;
     }
+
+    accountNameLock.addEventListener("input", validateToolLock);
+    privateOwnerKey1Lock.addEventListener("input", validateToolLock);
+    privateOwnerKey2Lock.addEventListener("input", validateToolLock);
+    explicitConfirmationLock.addEventListener("change", validateToolLock);
+
+    signWithTwoOwnerKeysLock.addEventListener("change", () => {
+        if (secondPrivateKeyGroupLock) {
+            secondPrivateKeyGroupLock.style.display = signWithTwoOwnerKeysLock.checked ? "block" : "none";
+        }
+        validateToolLock();
+    });
+
+    if (submitButtonLock) {
+        submitButtonLock.addEventListener("click", submitTransactionLock);
+    }
+
+    validateToolLock();
+
+    async function submitTransactionLock() {
+        if (!accountNameLock || !privateOwnerKey1Lock || !resultMessageLock) return;
+
+        const accountName = accountNameLock.value.trim();
+        const privateOwnerKey1 = privateOwnerKey1Lock.value.trim();
+        const privateOwnerKey2 = privateOwnerKey2Lock?.value.trim() || "";
+
+        const [accountData] = await client.database.getAccounts([accountName]);
+        const currentMemoKey = accountData?.memo_key || "";
+
+        if (!currentMemoKey) {
+            resultMessageLock.textContent = "Error: Failed to fetch this account's Public Memo Key.";
+            resultMessageLock.style.color = "red";
+            if (explicitConfirmationLock) explicitConfirmationLock.checked = false;
+            if (privateOwnerKey1Lock) privateOwnerKey1Lock.value = "";
+            if (privateOwnerKey2Lock) privateOwnerKey2Lock.value = "";
+            validateToolLock();
+            return;
+        }
+
+        const op = [
+            "account_update", {
+                account: accountName,
+                owner: {
+                    weight_threshold: 9999,
+                    account_auths: [],
+                    key_auths: []
+                },
+                active: {
+                    weight_threshold: 9999,
+                    account_auths: [],
+                    key_auths: []
+                },
+                posting: {
+                    weight_threshold: 9999,
+                    account_auths: [],
+                    key_auths: []
+                },
+                memo_key: currentMemoKey,
+                json_metadata: ""
+            }
+        ];
+
+        try {
+            const privateKeys = [dhive.PrivateKey.fromString(privateOwnerKey1)];
+            if (signWithTwoOwnerKeysLock.checked) {
+                privateKeys.push(dhive.PrivateKey.fromString(privateOwnerKey2));
+            }
+            const result = await client.broadcast.sendOperations([op], privateKeys);
+
+            resultMessageLock.textContent = "Transaction successfully broadcast: " + JSON.stringify(result);
+            resultMessageLock.style.color = "green";
+        } catch (error) {
+            resultMessageLock.textContent = "Error broadcasting transaction: " + error.message;
+            resultMessageLock.style.color = "red";
+        } finally {
+            if (explicitConfirmationLock) explicitConfirmationLock.checked = false;
+            if (privateOwnerKey1Lock) privateOwnerKey1Lock.value = "";
+            if (privateOwnerKey2Lock) privateOwnerKey2Lock.value = "";
+            validateToolLock();
+        }
+    }
+
 
 });
 
 
 function clearInputs() {
+
     const accountNameChgRec = document.getElementById("accountNameChgRec");
     const newRecoveryAccountChgRec = document.getElementById("newRecoveryAccountChgRec");
     const privateOwnerKey1ChgRec = document.getElementById("privateOwnerKey1ChgRec");
@@ -611,7 +752,9 @@ function clearInputs() {
     const resultMessageChgRec = document.getElementById("resultMessageChgRec");
 
     if (accountNameChgRec) accountNameChgRec.value = "";
+    if (accountNameChgRec) accountNameChgRec.style.borderColor = "";
     if (newRecoveryAccountChgRec) newRecoveryAccountChgRec.value = "";
+    if (newRecoveryAccountChgRec) newRecoveryAccountChgRec.style.borderColor = "";
     if (privateOwnerKey1ChgRec) privateOwnerKey1ChgRec.value = "";
     if (signWithTwoOwnerKeysChgRec) signWithTwoOwnerKeysChgRec.checked = false;
     if (privateOwnerKey2ChgRec) privateOwnerKey2ChgRec.value = "";
@@ -635,6 +778,7 @@ function clearInputs() {
     const resultMessageUpd = document.getElementById("resultMessageUpd");
 
     if (accountNameUpd) accountNameUpd.value = "";
+    if (accountNameUpd) accountNameUpd.style.borderColor = "";
     if (newPublicOwnerKey1Upd) newPublicOwnerKey1Upd.value = "";
     if (useTwoPublicOwnerKeysUpd) useTwoPublicOwnerKeysUpd.checked = false;
     if (newPublicOwnerKey2Upd) newPublicOwnerKey2Upd.value = "";
@@ -659,6 +803,7 @@ function clearInputs() {
     const resultMessageExecRec = document.getElementById("resultMessageExecRec");
 
     if (accountNameExecRec) accountNameExecRec.value = "";
+    if (accountNameExecRec) accountNameExecRec.style.borderColor = "";
     if (newPrivateOwnerKeyExecRec) newPrivateOwnerKeyExecRec.value = "";
     if (previousPrivateOwnerKey1ExecRec) previousPrivateOwnerKey1ExecRec.value = "";
     if (previousPrivateOwnerKey2ExecRec) previousPrivateOwnerKey2ExecRec.value = "";
@@ -666,6 +811,26 @@ function clearInputs() {
     if (secondPrivateKeyGroupExecRec) secondPrivateKeyGroupExecRec.style.display = "none";
     if (submitButtonExecRec) submitButtonExecRec.disabled = true;
     if (resultMessageExecRec) resultMessageExecRec.textContent = "";
+
+    const accountNameLock = document.getElementById("accountNameLock");
+    const privateOwnerKey1Lock = document.getElementById("privateOwnerKey1Lock");
+    const signWithTwoOwnerKeysLock = document.getElementById("signWithTwoOwnerKeysLock");
+    const secondPrivateKeyGroupLock = document.getElementById("secondPrivateKeyGroupLock");
+    const privateOwnerKey2Lock = document.getElementById("privateOwnerKey2Lock");
+    const explicitConfirmationLock = document.getElementById("explicitConfirmationLock");
+    const submitButtonLock = document.getElementById("submitButtonLock");
+    const resultMessageLock = document.getElementById("resultMessageLock");
+
+    if (accountNameLock) accountNameLock.value = "";
+    if (accountNameLock) accountNameLock.style.borderColor = "";
+    if (privateOwnerKey1Lock) privateOwnerKey1Lock.value = "";
+    if (signWithTwoOwnerKeysLock) signWithTwoOwnerKeysLock.checked = false;
+    if (secondPrivateKeyGroupLock) secondPrivateKeyGroupLock.style.display = "none";
+    if (privateOwnerKey2Lock) privateOwnerKey2Lock.value = "";
+    if (explicitConfirmationLock) explicitConfirmationLock.checked = false;
+    if (submitButtonLock) submitButtonLock.disabled = true;
+    if (resultMessageLock) resultMessageLock.textContent = "";
+
 }
 
 
@@ -681,9 +846,11 @@ function showPage(pageId) {
     document.getElementById("changeRecoveryTool").style.display = "none";
     document.getElementById("accountUpdateTool").style.display = "none";
     document.getElementById("executeRecoveryTool").style.display = "none";
+    document.getElementById("irreversibleLockTool").style.display = "none";
 
     document.getElementById(pageId).style.display = "block";
 }
+
 
      
     
@@ -691,20 +858,28 @@ function showPage(pageId) {
 </head>
 <body>
     <div id="mainMenu">
-    <h1>Owner Operations Tool</h1>
-        <p class="subtitle">• This tool requires internet connectivity, in order to broadcast transactions to the Hive blockchain</p>
+        <h1>Owner Operations Toolbox</h1>
+        <p class="subtitle">• These tools require internet connectivity, in order to broadcast transactions to the Hive blockchain</p>
         <p class="subtitle">• All these operations require signing with Owner Authority</p>
-        <p class="subtitle">• For other operation types, check my <a href="https://hassemer-g.github.io/transactions/" target="_blank">Transactions Tool</a></p>
+        <p class="subtitle">• For other operation types, check my <a href="https://hassemer-g.github.io/hive-ops/" target="_blank">Non-Owner Operations Toolbox</a></p>
         <button class="button" onclick="showPage('changeRecoveryTool')">Change Recovery Account</button>
         <button class="button" onclick="showPage('accountUpdateTool')">Change Account Keys</button>
         <button class="button" onclick="showPage('executeRecoveryTool')">Execute Account Recovery</button>
-        <p class="footer">Made with ❤️ by <a href="https://peakd.com/@hassemer" target="_blank">hassemer</a></p>
-        <p class="footer">v. 1.0</p>
+        <button class="button" onclick="showPage('irreversibleLockTool')" style="background-color: red; color: white">Lock Account Forever</button>
+        <p class="footer">Made with ❤️ by <a href="https://peakd.com/@hassemer" target="_blank">@hassemer</a></p>
+        <p class="footer">v. 1.1</p>
+        <br><br>
+        <h1>My Little Hive Tools</h1>
+        <p class="subtitle"><a href="https://hassemer-g.github.io/hive-keys/" target="_blank">Key Derivation Toolbox</a></p>
+        <p class="subtitle"><b>Owner Operations Toolbox</b></p>
+        <p class="subtitle"><a href="https://hassemer-g.github.io/hive-ops/" target="_blank">Non-Owner Operations Toolbox</a></p>
+        <p class="footer" style="color: red">ATTENTION: These tools are provided absolutely without guarantees; use them at your own risk.</p>
     </div>
 
     <div id="changeRecoveryTool" class="hidden">
         <h1>Change Recovery Account</h1>
-        <p class="subtitle">• This will change your Hive account's Recovery Account</p>
+        <p class="subtitle">• This tool can change your Hive account's Recovery Account</p>
+        <p class="subtitle">• The change of recovery account takes place 30 days after this operation is broadcast</p>
         <p class="subtitle">• I recommend changing your account's keys right after using this tool, because this operation requires signing with Owner Authority</p>
         <div class="form-group">
             <label for="accountNameChgRec">Your Hive Account:</label>
@@ -719,6 +894,7 @@ function showPage(pageId) {
             <input type="password" id="privateOwnerKey1ChgRec" placeholder="Private Owner Key (5...)">
             <div class="checkbox-container">
                 <input type="checkbox" id="signWithTwoOwnerKeysChgRec">
+                <br>
                 <label for="signWithTwoOwnerKeysChgRec">Sign the transaction with two owner keys</label>
             </div>
         </div>
@@ -733,8 +909,8 @@ function showPage(pageId) {
 
     <div id="accountUpdateTool" class="hidden">
         <h1>Change Account Keys</h1>
-        <p class="subtitle">• This will change your Hive account's keys</p>
-         <p class="subtitle">• Before using this tool, you can use my "<a href="https://hassemer-g.github.io/keys/" target="_blank">Key Derivation Tool</a>" to generate a random "Master Password" and derive your new keys</p>
+        <p class="subtitle">• This tool can change your Hive account's keys</p>
+         <p class="subtitle">• Before using this tool, you can use my <a href="https://hassemer-g.github.io/hive-keys/" target="_blank">Key Derivation Toolbox</a> to generate a random "Master Password" and derive your new keys</p>
         <div class="form-group">
             <label for="accountNameUpd">Your Hive Account:</label>
             <input type="text" id="accountNameUpd" placeholder="E.g., youraccount">
@@ -744,6 +920,7 @@ function showPage(pageId) {
             <input type="text" id="newPublicOwnerKey1Upd" placeholder="New Public Owner Key (STM...)">
             <div class="checkbox-container">
                 <input type="checkbox" id="useTwoPublicOwnerKeysUpd">
+                <br>
                 <label for="useTwoPublicOwnerKeysUpd">Use two owner keys to compose the new owner authority</label>
             </div>
         </div>
@@ -768,6 +945,7 @@ function showPage(pageId) {
             <input type="password" id="privateOwnerKey1Upd" placeholder="Private Owner Key (5...)">
             <div class="checkbox-container">
                 <input type="checkbox" id="signWithTwoOwnerKeysUpd">
+                <br>
                 <label for="signWithTwoOwnerKeysUpd">Sign the transaction with two owner keys</label>
             </div>
         </div>
@@ -782,9 +960,10 @@ function showPage(pageId) {
 
     <div id="executeRecoveryTool" class="hidden">
         <h1>Execute Account Recovery</h1>
-        <p class="subtitle">• This will execute the recovery of a Hive account</p>
-        <p class="subtitle">• Before recovering an account, your Recovery Account must broadcast a Recovery Request operation (this can be done using my <a href="https://hassemer-g.github.io/transactions/" target="_blank">Transactions Tool</a>)</p>
-        <p class="subtitle">• Your "New Private Owner Key" must match the "New Public Owner Key" given in the Recovery Request broadcast by your Recovery Account</p>
+        <p class="subtitle">• This tool can conclude the recovery process of a Hive account</p>
+        <p class="subtitle">• Before using this tool, your Recovery Account must broadcast a Recovery Request operation (this can be done using my <a href="https://hassemer-g.github.io/hive-ops/" target="_blank">Non-Owner Operations Toolbox</a>)</p>
+        <p class="subtitle">• Your "New Private Owner Key" must match the "New Public Owner Key" specified in the Recovery Request broadcast by your Recovery Account</p>
+        <p class="subtitle">• The previous Owner Key(s) used for recovery must not be older than 30 days!</p>
         <p class="subtitle">• I recommend changing your account's keys right after completing the recovery process (use my "Change Account Keys" tool)</p>
         <div class="form-group">
             <label for="accountNameExecRec">Your Hive Account:</label>
@@ -799,6 +978,7 @@ function showPage(pageId) {
             <input type="password" id="previousPrivateOwnerKey1ExecRec" placeholder="Previous Private Owner Key (5...)">
             <div class="checkbox-container">
                 <input type="checkbox" id="signWithTwoOwnerKeysExecRec">
+                <br>
                 <label for="signWithTwoOwnerKeysExecRec">The previous owner authority had two owner keys</label>
             </div>
         </div>
@@ -810,5 +990,39 @@ function showPage(pageId) {
         <p id="resultMessageExecRec"></p>
         <button class="button" onclick="showPage('mainMenu')">Return to Main Menu</button>
     </div>
+
+    <div id="irreversibleLockTool" class="hidden">
+        <h1>Lock Account Forever</h1>
+        <p class="subtitle">• This tool can permanently lock your Hive account</p>
+        <p class="subtitle">• This will ensure that, once the account is "locked", no one will be able to perform any action with this account, even if one day it becomes computationally feasible to brute-force Hive keys</p>
+        <p class="subtitle">• Any assets controlled by this account will effectively be lost forever</p>
+        <p class="subtitle">• Note that the "locked" account can still be recovered during the next 30 days after this operation is broadcast</p>
+        <div class="form-group">
+            <label for="accountNameLock">Your Hive Account:</label>
+            <input type="text" id="accountNameLock" placeholder="E.g., youraccount">
+        </div>
+        <div class="form-group">
+            <label for="privateOwnerKey1Lock">Your Private Owner Key:</label>
+            <input type="password" id="privateOwnerKey1Lock" placeholder="Private Owner Key (5...)">
+            <div class="checkbox-container">
+                <input type="checkbox" id="signWithTwoOwnerKeysLock">
+                <label for="signWithTwoOwnerKeysLock">Sign the transaction with two owner keys</label>
+            </div>
+        </div>
+        <div class="form-group" id="secondPrivateKeyGroupLock" style="display: none;">
+            <label for="privateOwnerKey2Lock">Second Private Owner Key:</label>
+            <input type="password" id="privateOwnerKey2Lock" placeholder="Second Private Owner Key (5...)">
+        </div>
+        <div class="checkbox-container">
+            <input type="checkbox" id="explicitConfirmationLock">
+            <label for="explicitConfirmationLock" style="color: red">Yes, I want to lock my account forever!</label>
+            <br><br>
+        </div>
+        <button id="submitButtonLock" disabled>Submit Transaction</button>
+        <p id="resultMessageLock"></p>
+        <button class="button" onclick="showPage('mainMenu')">Return to Main Menu</button>
+    </div>
+
 </body>
+    
 </html>
